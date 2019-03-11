@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	 <!-- Bootstrap core CSS-->
+    <link href="/admin/css/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom fonts for this template-->
+    <link href="/admin/css/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+
+    <!-- Page level plugin CSS-->
+    <link href="/admin/css/datatables/dataTables.bootstrap4.css" rel="stylesheet">
+
+    <!-- Custom styles for this template-->
+    <link href="/admin/css/sb-admin.css" rel="stylesheet">
+</head>
+<body onLoad = "window.setTimeout('location.reload()', 300000)">
+	
+	 <div class="container-fluid">
+
+          <!-- Breadcrumbs-->
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+              <a href="#">Dashboard</a>
+            </li>
+            <li class="breadcrumb-item active">Tables</li>
+          </ol>
+
+          <!-- DataTables Example -->
+          <div class="card mb-3">
+            <div class="card-header">
+              <i class="fas fa-table"></i>
+              Les demandes des visiteurs recherchant des répétiteurs</div>
+            <div class="card-body">
+              <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                  <thead>
+                    <tr>
+                     <th>Identifiant</th>
+               		 <th>Genre</th>
+               		<th>Prénom(s)</th>
+               		<th>Nom</th>
+               		<th>Téléphone</th>
+               		<th>Adresse</th>
+               		<th>Email</th>
+               		<th>Spécialté</th>
+               		<th>CV</th>
+               		<th>Action</th>
+                    </tr>
+                  </thead>
+                  <tfoot>
+                    <tr>
+                      <th>Identifiant</th>
+               		 <th>Genre</th>
+               		<th>Prénom(s)</th>
+               		<th>Nom</th>
+               		<th>Téléphone</th>
+               		<th>Adresse</th>
+               		<th>Email</th>
+               		<th>Spécialité</th>
+               		<th>CV</th>
+               		<th>Action</th>
+                    </tr>
+                  </tfoot>
+                  <tbody>
+                    <tr th:each ="element : ${finalisation}">
+               <td th:utext="${element.id}">...</td>
+               <td th:utext="${element.genre}">...</td>
+               <td th:utext="${element.prenom}">...</td>
+               <td th:utext="${element.nom}">...</td>
+               <td th:utext="${element.numeroTelephone}">...</td>
+               <td th:utext="${element.adresse}">...</td>
+               <td th:utext="${element.email}">...</td>
+               <td th:utext="${element.specialite}">...</td>
+               <td th:utext="${element.cv}">...</td>
+               <td><a href="#">Voir CV</a> <a href="">Accepter</a> <a href="">Refuser</a></td>
+            </tr>                 
+             </tbody>
+                </table>
+              </div>
+            </div>
+            <div class="card-footer small text-muted" id="heure"> </div>
+          </div>
+          </div>
+
+		<script type="text/javascript">
+			
+			function heureSystem(){
+				var date = new Date();
+				var heure = date.getHours();
+				var minutes = date.getMinutes();
+				
+				if (minutes < 10){
+					minutes = "0" + minutes;
+				}
+				
+				return heure + "h : " + minutes + "min";
+
+			}
+			
+			var heure = document.getElementById("heure");
+			heure.innerHTML = "Mise à jour aujourd'hui à "+ heureSystem();
+		</script>
+
+           <!-- Bootstrap core JavaScript-->
+    <script src="admin/js/jquery/jquery.min.js"></script>
+    <script src="admin/js/bootstrap/bootstrap.bundle.min.js"></script>
+
+    <!-- Core plugin JavaScript-->
+    <script src="admin/js/jquery/jquery.easing.min.js"></script>
+
+    <!-- Page level plugin JavaScript-->
+    <script src="admin/js/datatable/jquery.dataTables.js"></script>
+    <script src="admin/js/datatable/dataTables.bootstrap4.js"></script>
+
+    <!-- Custom scripts for all pages-->
+    <script src="admin/js/sb-admin.min.js"></script>
+
+    <!-- Demo scripts for this page-->
+    <script src="admin/js/datatable/datatables-demo.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+<h1> Les donner transmises par le formulaires</h1>
+
+ <table border="1">
+            <tr>
+               <th>UserName</th>
+               <th>Prénom</th>
+               <th>Nom</th>
+               <th>Genre</th>
+               <th>Adresse</th>
+               <th>Téléphone</th>
+               <th>Email</th>
+               <th>Matière</th>
+               <th>Niveau</th>
+            </tr>
+            <tr th:each ="element : ${apprenant}">
+               <td th:utext="${element.id}">...</td>
+               <td th:utext="${element.genre}">...</td>
+               <td th:utext="${element.prenom}">...</td>
+               <td th:utext="${element.nom}">...</td>
+               <td th:utext="${element.numeroTelephone}">...</td>
+               <td th:utext="${element.adresse}">...</td>
+               <td th:utext="${element.email}">...</td>
+               <td th:utext="${element.niveau}">...</td>
+               <td th:utext="${element.matiere}">...</td>
+            </tr>
+      </table>
+
+</body>
+</html>
