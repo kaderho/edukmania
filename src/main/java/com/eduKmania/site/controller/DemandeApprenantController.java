@@ -18,9 +18,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-import com.eduKmania.site.exception.RessourceNotFoundException;
+import com.eduKmania.site.exception.FileNotFoundException;
 import com.eduKmania.site.model.DemandeApprenant;
 import com.eduKmania.site.repository.DemandeApprenantRepository;
+import com.eduKmania.site.service.DemandesService;
 
 /*
  *	L' @Controller annotation est utilisée pour définir un contrôleur et l' @ResponseBody 
@@ -34,13 +35,16 @@ public class DemandeApprenantController {
 	private static final String emailExist = "Cette adresse Email est invalide";
 	@Autowired
 	DemandeApprenantRepository demandeApprenantRepository;
+	
+	@Autowired
+	DemandesService demandesService;
 	/* 
 	 * La méthode ci-dessus est assez simple. Il appelle la findAll()méthode 
 	 * de JpaRepository pour récupérer toutes les notes de la base de données 
 	 * et renvoie la liste complète.
 	 */
 	// Get All Notes
-	@GetMapping("/trouver-un-repetiteur")
+	@GetMapping("/demandes/trouver-un-repetiteur/renseigner-vos-informations")
 	public List<DemandeApprenant> getAllDemandeApprenant() {
 	    return demandeApprenantRepository.findAll();
 	}
@@ -53,13 +57,13 @@ public class DemandeApprenantController {
 		dans le Notemodèle.
 	 */
 	// Create a new Note
-	@PostMapping("/trouver-un-repetiteur")
+	@PostMapping("/demandes/trouver-un-repetiteur")
 	public String createDemandeApprenant(Model model,
 			@Valid @ModelAttribute("demandeApprenant")DemandeApprenant demandeApprenant ,
 			BindingResult result) {
 	    
 		if (result.hasErrors()) {
-            return "trouver_repetiteur";
+            return "/demandes/trouver_repetiteur";
         }
 		else {
 			Collection<DemandeApprenant> demandeInDb = demandeApprenantRepository.findAll();
@@ -68,20 +72,20 @@ public class DemandeApprenantController {
 				
 				if(x.getEmail().equals(demandeApprenant.getEmail())) {
 					model.addAttribute("emailExist", emailExist);
-					return "trouver_repetiteur";
+					return "/demandes/trouver_repetiteur";
 				}
 			}
 		}
 		 try {
 	         
-			 demandeApprenantRepository.save(demandeApprenant);
+			 demandesService.storeDemandeApprenant(demandeApprenant);
 	      }
 	      // Other error!!
 	      catch (Exception e) {
 	         
 	    	  model.addAttribute("errorMessage", "Error: " + e.getMessage());
 	    	  
-	    	  return "trouver_repetiteur";
+	    	  return "/demandes/trouver_repetiteur";
 	      }
 		
 		return "Validation";
@@ -101,19 +105,19 @@ public class DemandeApprenantController {
 		ResourceNotFoundExceptionclasse).
 	 */
 	// Get a Single Note
-	@GetMapping("/trouver-un-repetiteur/{id}")
-	public DemandeApprenant getDemandeApprenantById(@PathVariable(value = "id") Long demandeApprenantId) {
+	@GetMapping("/apprenant/{id}")
+	public DemandeApprenant getDemandeApprenantById(@PathVariable(value = "id") String demandeApprenantId) {
 	    return demandeApprenantRepository.findById(demandeApprenantId)
-	            .orElseThrow(() -> new RessourceNotFoundException("Demande d'un apprenant", "id", demandeApprenantId));
+	            .orElseThrow(() -> new FileNotFoundException("Identifiant introuvable"));
 	}
 	
 	// Update a Note
-	@PutMapping("/trouver-un-repetiteur/{id}")
-	public DemandeApprenant updateDemandeApprenant(@PathVariable(value = "id") Long demandeApprenantId,
+	@PutMapping("/apprenant/{id}")
+	public DemandeApprenant updateDemandeApprenant(@PathVariable(value = "id") String demandeApprenantId,
 	                                        @Valid @RequestBody DemandeApprenant demandeApprenantDetails) {
 
 		DemandeApprenant demandeApprenant = demandeApprenantRepository.findById(demandeApprenantId)
-	            .orElseThrow(() -> new RessourceNotFoundException("Note", "id", demandeApprenantId));
+	            .orElseThrow(() -> new FileNotFoundException("Identifiant introuvable"));
 
 		demandeApprenant.setPrenom(demandeApprenantDetails.getPrenom());
 		demandeApprenant.setNom(demandeApprenantDetails.getNom());
@@ -123,20 +127,9 @@ public class DemandeApprenantController {
 		demandeApprenant.setTelephone(demandeApprenantDetails.getTelephone());
 		demandeApprenant.setNiveau(demandeApprenantDetails.getNiveau());
 		demandeApprenant.setMatiere(demandeApprenantDetails.getMatiere());
-		demandeApprenant.setEtat(demandeApprenantDetails.isEtat());
+		
 
 	    DemandeApprenant updatedDemandeApprenant = demandeApprenantRepository.save(demandeApprenant);
 	    return updatedDemandeApprenant;
-	}
-	
-	// Delete a Note
-	@DeleteMapping("/trouver-un-repetiteur/{id}")
-	public ResponseEntity<?> deleteDemandeApprenant(@PathVariable(value = "id") Long demandeApprenantId) {
-	    DemandeApprenant demandeApprenant = demandeApprenantRepository.findById(demandeApprenantId)
-	            .orElseThrow(() -> new RessourceNotFoundException("Demande d'un apprenant", "id", demandeApprenantId));
-
-	    demandeApprenantRepository.delete(demandeApprenant);
-
-	    return ResponseEntity.ok().build();
 	}
 }

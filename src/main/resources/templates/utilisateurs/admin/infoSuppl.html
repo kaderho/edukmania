@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http:www.thymeleaf.org">
+
+<head xmlns:th="http://www.thymeleaf.org">
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="description" content="">
+<meta name="author" content="">
+
+<title th:text="${title}"></title>
+
+<!-- Include _header.html -->
+<th:block th:include="/utilisateurs/admin/_header"></th:block>
+
+</head>
+<body id="page-top">
+
+	<!-- Include _nav.html -->
+	<th:block th:include="/utilisateurs/admin/_nav"></th:block>
+	<div id="wrapper">
+		<!-- Include _sidebar.html -->
+		<th:block th:include="/utilisateurs/admin/_sidebar"></th:block>
+		<div id="content-wrapper">
+
+			<div class="container-fluid">
+			
+				<!-- DataTables Example -->
+				<div class="card mb-3">
+					<div class="card-header">
+						<h3 th:utext="'Informations supplémentaires de la demande Nº'+${infoDemande.code}"></h3>
+					</div>
+					<div class="card-body">
+						<div class="card-header"><p>
+							<strong>Demande soumise le :</strong><span th:text="${infoDemande.dateCreation}"></span>
+							 <strong>puis traitée le : </strong></p></div>
+							<div class="card-body">
+								<h4 class="card-title">Informations de l'apprenant</h4>
+								<p><strong>Nom : </strong><span th:text="${infoDemande.nom}"></span> 
+								<strong>Prénom(s) : </strong><span th:text="${infoDemande.prenom}"></span>
+								<strong>Téléphone : </strong><span th:text="${infoDemande.telephone}"></span></p>
+								<p><strong>Adresse : </strong><span th:text="${infoDemande.adresse}"></span>
+								<strong>Niveau de l'apprenant : </strong><span th:text="${infoDemande.niveau}"></span>
+								 <strong>Matière souhaitée: </strong><span th:text="${infoDemande.matiere}"></span></p>
+								<h4 class="card-title">Informations du répétiteur trouvé</h4>
+								<p><strong>Nom : </strong> <strong>Prénom(s) : </strong> <strong>Téléphone : </strong></p>
+								<p><strong>Adresse : </strong><strong>Formation : </strong> <strong>Spécialité(s): </strong></p>								
+							</div>
+							<div class="card-footer">
+								<p><strong>Remarque : </strong>il se peut que le tutorat n'ait encore démarré, 
+								si le voyant juste à coté du numero de la demande est au rouge. contacter l'une ou les deux parties pour en savoir plus. </p>
+							</div>
+					</div>
+					<div class="card-footer small text-muted">Dernière mise à
+						jour 11 h : 59 min</div>
+				</div>
+
+			</div>
+			<!-- /.container-fluid -->
+			
+			
+			<!-- Include _footer.html -->
+			<th:block th:include="/utilisateurs/admin/_footer"></th:block>
+
+		</div>
+		<!-- /.content-wrapper -->
+
+	</div>
+	<!-- Include _sidebar.html -->
+	<th:block th:include="/utilisateurs/admin/_scriptlink"></th:block>
+</body>
+
+</html>

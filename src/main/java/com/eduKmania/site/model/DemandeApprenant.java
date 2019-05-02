@@ -6,7 +6,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -16,11 +15,12 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
-import org.hibernate.validator.constraints.Email;
+import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import com.eduKmania.site.util.ValidEmail;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 /*
@@ -51,16 +51,19 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
  *  Jackson pour la sérialisation et la désérialisation des objets Java vers et depuis JSON.
  */ 
 
-@SuppressWarnings("deprecation")
 @Entity
-@Table(name = "demandeApprenant")
+@Table(name = "demandesApprenants")
 @EntityListeners(AuditingEntityListener.class)
-@JsonIgnoreProperties(value = {"dateCreation"},   allowGetters = true)
+@JsonIgnoreProperties(value = {"dateCreation"}, allowGetters = true)
 public class DemandeApprenant {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+	@GeneratedValue(generator = "uuid")
+    @GenericGenerator(name = "uuid", strategy = "uuid2")
+	@Column(name = "id_dmde_apprenant")
+	private String id;
+	
+	private String code;
 	
 	@NotEmpty(message = "Ce champ est obligatoire")
 	private String situation;
@@ -80,10 +83,13 @@ public class DemandeApprenant {
 	@NotBlank(message = "Ce champ est obligatoire")
 	private String adresse;
 	
-	@NotBlank(message = "Ce champ est obligatoire")
-	@Email(message = "Adresse Email invalide")
-	private String email;
+	@SuppressWarnings("unused")
+	private String status;
 	
+	@ValidEmail()
+	@NotBlank(message = "Ce champ est obligatoire")
+	private String email;
+
 	@NotBlank(message = "Ce champ est obligatoire")
 	private String niveau;
 	
@@ -95,14 +101,28 @@ public class DemandeApprenant {
     @CreatedDate
 	private Date dateCreation;
 	
-	private boolean etat;
+	public String getStatus() {
+		return "Non traitée";
+	}
 
-	public Long getId() {
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
+	public String getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(String id) {
 		this.id = id;
+	}
+
+	public String getCode() {
+		return code;
+	}
+
+	public void setCode(String code) {
+		this.code = code;
 	}
 
 	public String getSituation() {
@@ -176,15 +196,4 @@ public class DemandeApprenant {
 	public void setDateCreation(Date dateCreation) {
 		this.dateCreation = dateCreation;
 	}
-
-	public boolean isEtat() {
-		return etat;
-	}
-
-	public void setEtat(boolean etat) {
-		this.etat = etat;
-	}
-	
-	
-
 }

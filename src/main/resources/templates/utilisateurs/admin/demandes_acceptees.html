@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http:www.thymeleaf.org">
+
+<head xmlns:th="http://www.thymeleaf.org">
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="description" content="">
+<meta name="author" content="">
+
+<title th:text="${title}"></title>
+
+<!-- Include _header.html -->
+<th:block th:include="/utilisateurs/admin/_header"></th:block>
+
+</head>
+<body id="page-top">
+
+	<!-- Include _nav.html -->
+	<th:block th:include="/utilisateurs/admin/_nav"></th:block>
+	<div id="wrapper">
+		<!-- Include _sidebar.html -->
+		<th:block th:include="/utilisateurs/admin/_sidebar"></th:block>
+		<div id="content-wrapper">
+
+			<div class="container-fluid">
+
+				<!-- Breadcrumbs-->
+				<ol class="breadcrumb">
+					<li class="breadcrumb-item"><a href="#">Tableau de bord</a></li>
+					<li class="breadcrumb-item active">Demandes acceptées</li>
+				</ol>
+
+
+				<!-- DataTables Example -->
+				<div class="card mb-3">
+					<div class="card-header">
+						<i class="fas fa-table"></i> La liste de toutes les demandes
+						acceptées
+					</div>
+					<div class="card-body">
+						<div class="table-responsive">
+							<table class="table table-bordered" id="dataTable" width="100%"
+								cellspacing="0">
+								<thead>
+									<tr>
+										<th>Prénom(s) et Nom</th>
+										<th>Téléphone</th>
+										<th>Adresse</th>
+										<th>Date</th>
+										<th>Action</th>
+									</tr>
+								</thead>
+								<tfoot>
+									<tr>
+										<th>Prénom(s) et Nom</th>
+										<th>Téléphone</th>
+										<th>Adresse</th>
+										<th>Date</th>
+										<th>Action</th>
+									</tr>
+								</tfoot>
+								<tbody>
+									<tr th:each="element: ${listedemandes}">
+										<td th:text="${element.prenom}+' '+${element.nom}">...</td>
+										<td th:text="${element.telephone}">...</td>
+										<td th:text="${element.adresse}">...</td>
+										<td th:text="${element.dateCreation}">...</td>
+										<td><a 	th:href="@{/admin/apprenants/informations-supplementaires/{id}(id=${element.id})}" 
+												class="btn btn-info"
+												target="_blank"
+												>Plus de détails</a></td>
+									</tr>
+									
+								</tbody>
+							</table>
+						</div>
+					</div>
+					<div class="card-footer small text-muted">Dernière mise à
+						jour 11 h : 59 min</div>
+				</div>
+
+			</div>
+			<!-- /.container-fluid -->
+			
+			
+			<!-- Include _footer.html -->
+			<th:block th:include="/utilisateurs/admin/_footer"></th:block>
+
+		</div>
+		<!-- /.content-wrapper -->
+
+	</div>
+	<!-- Include _sidebar.html -->
+	<th:block th:include="/utilisateurs/admin/_scriptlink"></th:block>
+</body>
+
+</html>

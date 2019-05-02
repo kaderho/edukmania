@@ -1,9 +1,13 @@
 package com.eduKmania.site.exception;
 
+@SuppressWarnings("serial")
 public class FileStorageException extends RuntimeException {
 	
-	private String message;
 	public FileStorageException(String message) {
-		this.message = message;
+		super(message);
 	}
+	
+	public FileStorageException(String message, Throwable cause) {
+        super(message, cause);
+    }
 }

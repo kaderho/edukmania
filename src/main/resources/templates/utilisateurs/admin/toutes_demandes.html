@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http:www.thymeleaf.org">
+<head xmlns:th="http://www.thymeleaf.org">
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="description" content="">
+<meta name="author" content="">
+
+<title th:text="${title}"></title>
+<!-- Include _header.html -->
+<th:block th:include="/utilisateurs/admin/_header"></th:block>
+</head>
+
+<body id="page-top">
+
+	<!-- Include _nav.html -->
+	<th:block th:include="/utilisateurs/admin/_nav"></th:block>
+
+	<div id="wrapper">
+
+		<!-- Include _sidebar.html -->
+		<th:block th:include="/utilisateurs/admin/_sidebar"></th:block>
+
+		<div id="content-wrapper">
+			<div class="container-fluid">
+				<!-- Breadcrumbs-->
+				<ol class="breadcrumb">
+					<li class="breadcrumb-item"><a href="#">Tableau de bord</a></li>
+					<li class="breadcrumb-item active">Toutes les demandes des apprenants</li>
+				</ol>
+				<!-- DataTables Example -->
+				<div class="card mb-3">
+					<div class="card-header">
+						<i class="fas fa-table"></i> La liste de toutes les demandes
+					</div>
+					<div class="card-body">
+						<div class="table-responsive">
+							<table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+								<thead>
+									<tr>
+										<th>Prénom(s) et Nom</th>
+										<th>Téléphone</th>
+										<th>Adresse</th>
+										<th>Date</th>
+										<th>Status</th>
+										<th>Action</th>
+									</tr>
+								</thead>
+								<tfoot>
+									<tr>
+										<th>Prénom(s) et Nom</th>
+										<th>Téléphone</th>
+										<th>Adresse</th>
+										<th>Date</th>
+										<th>Status</th>
+										<th>Action</th>
+									</tr>
+								</tfoot>
+								<tbody>
+									<tr th:each="element: ${listeAlldemandes}">
+										<td th:text="${element.prenom}+' '+${element.nom}">...</td>
+										<td th:text="${element.telephone}">...</td>
+										<td th:text="${element.adresse}">...</td>
+										<td th:text="${element.dateCreation}">...</td>
+										<td th:text="${element.status}">...</td>
+										<td><button data-toggle="modal" 
+													data-target="#myModal2"
+													th:value="${element.id}"
+													type="button"
+													
+													class="btn btn-danger pageAsk" 
+													>Supprimer</button>
+													<input type="text" hidden="" th:value="${element.id}" id="id-del">
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+					<div class="card-footer small text-muted">Dernière mise à
+						jour 11 h : 59 min</div>
+				</div>
+
+			</div>
+			<!-- /.container-fluid -->
+
+			<!-- Modal -->
+			<div class="modal fade" id="myModal2" role="dialog">
+				<div class="modal-dialog">
+
+					<!-- Modal content-->
+					<div class="modal-content">
+						<div class="modal-header">
+							<h4 class="modal-title">Suppression de demande</h4>
+						</div>
+						<div class="modal-body" id="modal-del">
+							<p>Voulez-vous supprimer cette demande ?</p>
+							<p>
+								<strong>Remarque:</strong> cette opération est irreversible.
+							</p>
+						</div>
+						<div class="modal-footer">
+							<a
+									id="btn-del" 
+									class="btn btn-danger btn-lg"
+									th:href="@{/admin/apprenants/toutes-les-demandes/}"
+									>Supprimer</a>
+							<button type="button" class="btn btn-primary" data-dismiss="modal">Annuler</button>
+						</div>
+					</div>
+
+				</div>
+			</div>
+
+			<!-- Include _footer.html -->
+			<th:block th:include="/utilisateurs/admin/_footer"></th:block>
+
+		</div>
+		<!-- /.content-wrapper -->
+
+	</div>
+	<!-- Include _sidebar.html -->
+	<th:block th:include="/utilisateurs/admin/_scriptlink"></th:block>
+
+	<script>
+		$(document).ready(function(){
+		
+		  $(".pageAsk").click(function(){
+		    $("#myModal2").modal({backdrop: "static"});
+		  });
+		});
+		
+		$(function(){
+			
+			$('.pageAsk').click(function(){
+				
+				$("#btn-del").attr('href','/admin/apprenants/toutes-les-demandes/'+this.value+'');
+				return false;
+				
+			});
+			
+		});
+		
+</script>
+
+</body>
+
+</html>

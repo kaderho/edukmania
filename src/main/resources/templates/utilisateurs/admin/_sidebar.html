@@ -1,0 +1,68 @@
+ <meta charset="utf-8">
+ <!-- Sidebar -->
+      <ul class="sidebar navbar-nav" xmlns:th="http://www.thymeleaf.org">
+        <li class="nav-item active">
+          <a class="nav-link" th:href="@{/admin}">
+            <i class="fas fa-fw fa-tachometer-alt"></i>
+            <span>Tableau de bord</span>
+          </a>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="pagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="fas fa-fw fa-folder"></i>
+            <span>Demandes</span>
+          </a>
+          <div class="dropdown-menu" aria-labelledby="pagesDropdown">
+            <h6 class="dropdown-header">Apprenants</h6>
+            <a class="dropdown-item" th:href="@{/admin/apprenants/toutes-les-demandes}">Toutes les demandes</a>
+            <a class="dropdown-item" th:href="@{/admin/apprenants/demandes-acceptees}">Demandes Acceptées</a>
+            <a class="dropdown-item" th:href="@{/admin/apprenants/demandes-refusees}">Demandes refusées</a>
+            <div class="dropdown-divider"></div>
+            <h6 class="dropdown-header">Répétiteurs</h6>
+            <a class="dropdown-item" th:href="@{/admin/repetiteurs/toutes-les-demandes}">Nouvelles demandes</a>
+            <a class="dropdown-item" th:href="@{/admin/repetiteurs/demandes-acceptees}">Demandes Acceptées</a>
+            <a class="dropdown-item" th:href="@{/admin/repetiteurs/demandes-refusees}">Demandes refusées</a>
+           
+          </div>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="pagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="fas fa-fw fa-folder"></i>
+            <span>Nos tutorats</span>
+          </a>
+          <div class="dropdown-menu" aria-labelledby="pagesDropdown">
+             <a class="dropdown-item" href="/admin/nos-tutorats/creation-tutorat" 
+             						th:href="@{/admin/nos-tutorats/creation-tutorat}">Création de tutorats</a>
+            <a class="dropdown-item" href="#">Tutorats en cours</a>
+            <a class="dropdown-item" href="#">Tutorats terminés</a>
+            <div class="dropdown-divider"></div>
+           
+          </div>
+        </li>
+
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="pagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="fas fa-fw fa-folder"></i>
+            <span>Utilisateurs</span>
+          </a>
+          <div class="dropdown-menu" aria-labelledby="pagesDropdown">
+            <h6 class="dropdown-header">Répétiteurs</h6>
+            <a class="dropdown-item" href="#">Tout nos répétiteurs</a>
+            <a class="dropdown-item" href="#">Gérer les règles</a>
+            <a class="dropdown-item" href="#">Répondre suggestion</a>
+            <a class="dropdown-item" href="#">Envoyer notification</a>
+             <div class="dropdown-divider"></div>
+             <h6 class="dropdown-header">Apprenants</h6>
+             <a class="dropdown-item" href="#">Tout nos apprenants</a>
+            <a class="dropdown-item" href="#">Gérer les règles</a>
+            <a class="dropdown-item" href="#">Répondre suggestion</a>
+            <a class="dropdown-item" href="#">Envoyer notification</a>
+           
+          </div>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="charts.html">
+            <i class="fas fa-fw fa-chart-area"></i>
+            <span>Toutes nos Statistiques</span></a>
+        </li>
+      </ul>

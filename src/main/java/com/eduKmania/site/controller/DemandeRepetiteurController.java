@@ -1,6 +1,7 @@
 package com.eduKmania.site.controller;
 
-import java.util.Collection;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.validation.Valid;
 
@@ -10,11 +11,12 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.eduKmania.site.model.DemandeRepetiteur;
+import com.eduKmania.site.model.DemandeRepetiteurBD;
 import com.eduKmania.site.repository.DemandeRepetiteurRepository;
-
+import com.eduKmania.site.service.DemandesService;
+import com.eduKmania.site.service.FileStorageService;
 
 /*
  *	L' @Controller annotation est utilisée pour définir un contrôleur et l' @ResponseBody 
@@ -23,10 +25,19 @@ import com.eduKmania.site.repository.DemandeRepetiteurRepository;
  */
 @Controller
 public class DemandeRepetiteurController {
-
+	
+	@SuppressWarnings("unused")
+	private static final String namePage4 = "Informations supplémentaires";
+	
 	@Autowired
 	DemandeRepetiteurRepository demandeRepetiteurRepository;
 	
+	@Autowired 
+	FileStorageService FileStorageService;
+	
+	@Autowired
+	DemandesService demandesService;
+		
 
 	/*
 	 * L' @RequestBodyannotation est utilisée pour lier le corps de la demande à un paramètre de méthode.
@@ -35,40 +46,61 @@ public class DemandeRepetiteurController {
 		Rappelez-vous, nous avions marqué le titre et le contenu de la demande avec des @NotBlankannotations 
 		dans le Notemodèle.
 	 */
-	// Create a new Note
-	@PostMapping("/devenir-un-repetiteur")
+	
+	//creer une demande de type répétiteur
+	@PostMapping("/demandes/devenir-un-repetiteur")
 	public String createDemandeApprenant(Model model,
-			@Valid @ModelAttribute("demandeRepetiteur") DemandeRepetiteur demandeRepetiteur ,
-			BindingResult result, RedirectAttributes redirectAttribute) {
-	    
+	 @Valid @ModelAttribute("demandeRepetiteur") DemandeRepetiteur demandeRepetiteur,
+	 BindingResult result)
+			 {
+		
+		Pattern pattern;
+		Matcher matcher;
+		
 		if (result.hasErrors()) {
-			model.addAttribute("message", "Cette adresse est déjà utilisée.");
-            return "devenir_repetiteur";
-        }
-		else {
-			Collection<DemandeRepetiteur> demandeInDb = demandeRepetiteurRepository.findAll();
 			
-			for (DemandeRepetiteur x : demandeInDb) {
-				
-				if(x.getEmail().equals(demandeRepetiteur.getEmail())) {
-					
-					return "devenir_repetiteur";
-				}
-			}
+			return "/demandes/devenir_repetiteur"; 
 		}
+		 
+		if(demandesService.emailExist(demandeRepetiteur.getEmail())){
+			model.addAttribute("message", "Cette adresse est déjà utilisée.");
+			return "/demandes/devenir_repetiteur";
+		}
+		
+		 pattern = Pattern.compile("\\d");
+		 matcher = pattern.matcher(demandeRepetiteur.getPrenom());
+		 	
+		 	if (matcher.find()){
+		 		
+		 		model.addAttribute("message1", "Information invalide.");
+				return "/demandes/devenir_repetiteur";
+		 	}
 		 try {
-	         
-			 demandeRepetiteurRepository.save(demandeRepetiteur);
-	      }
+			 String fileName = FileStorageService.storeFile(demandeRepetiteur.getFiles());
+			 
+			 DemandeRepetiteurBD newDemande = new DemandeRepetiteurBD();
+			 
+	            newDemande.setGenre(demandeRepetiteur.getGenre());
+	            newDemande.setPrenom(demandeRepetiteur.getPrenom());
+	            newDemande.setNom(demandeRepetiteur.getNom());
+	            newDemande.setAdresse(demandeRepetiteur.getAdresse());
+	            newDemande.setEmail(demandeRepetiteur.getEmail());
+	            newDemande.setSpecialite(demandeRepetiteur.getSpecialite());
+	            newDemande.setTelephone(demandeRepetiteur.getTelephone());
+	            newDemande.setStatus(demandeRepetiteur.getStatus());
+	            newDemande.setFileName(fileName);
+	        
+	            demandeRepetiteurRepository.save(newDemande); 
+		 }
+		 
 	      // Other error!!
 	      catch (Exception e) {
 	         
-	    	 // model.addAttribute("errorMessage", "Error: " + e.getMessage());
-	    	  
-	    	  return "devenir_repetiteur";
+	    	 model.addAttribute("errorMessage", "Error: " + e.getMessage());
+	    	 System.out.println(e.getMessage());
+	    	  return "/demandes/devenir_repetiteur";
 	      }
-		
-		return "Validation";
+		 return "validation";
 	}
 	
 }
